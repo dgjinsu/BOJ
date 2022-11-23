@@ -6,66 +6,65 @@
 #include <fstream>
 #define endl '\n'
 using namespace std;
-vector<vector<int>> v(10000);
-bool visit[10002];
-bool visit_[10002];
-vector<int> result_dfs;
-vector<int> result_bfs;
+
+int arr[51][51];
+bool visit[51][51];
+int dx[4] = { -1,1,0,0 };
+int dy[4] = { 0,0,-1,1 };
+deque<pair<int, int>> q;
+int row;
+int col;
+int c;
 
 
-void dfs(int x) {
-	visit[x] = true;
-	result_dfs.push_back(x);
-	for (int i = 0; i < v[x].size(); i++) {
-		if (visit[v[x][i]] == false) {
-			dfs(v[x][i]);
-		}
-	}
-
-}
-
-void bfs(int x) {
-	deque<int> q;
-	q.push_back(x);
-	visit_[x] = true;
-
+void bfs(int x, int y) {
+	q.push_back({ x,y });
+	visit[x][y] = true;
 	while (!q.empty()) {
-		int cur = q.front();
+		int a = q.front().first;
+		int b = q.front().second;
 		q.pop_front();
-		result_bfs.push_back(cur);
-		for (int i = 0; i < v[cur].size(); i++) {
-			int next = v[cur][i];
-			if (visit_[next] == false) {
-				q.push_back(next);
-				visit_[next] = true;
+		for (int i = 0; i < 4; i++) {
+			int next_a = a + dx[i];
+			int next_b = b + dy[i];
+			if (next_a >= 0 && next_b >= 0 && next_a < row && next_b < col) {
+				if (visit[next_a][next_b] == false && arr[next_a][next_b] == 1) {
+					visit[next_a][next_b] = true;
+					q.push_back({ next_a,next_b });
+				}
 			}
 		}
 	}
 }
 
 int main() {
-	
-	int n, m, start;
-	int a, b;
+	int t;
+	cin >> t;
 
-	cin >> n >> m >> start;
-	for (int i = 0; i < m; i++) {
-		cin >> a >> b;
-		v[a].push_back(b);
-		v[b].push_back(a);
+	for (int k = 0; k < t; k++) {
+		cin >> col >> row >> c;
+		int cnt = 0;
+		for (int i = 0; i < c; i++) {
+			int x;
+			int y;
+			cin >> x >> y;
+			arr[y][x] = 1;
+		}
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < col; j++) {
+				if (arr[i][j] == 1 && visit[i][j] == false) {
+					bfs(i, j);
+					cnt++;
+				}
+			}
+		}
+		cout << cnt << endl;
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < col; j++) {
+				arr[i][j] = 0;
+				visit[i][j] = false;
+			}
+		}
 	}
-	for (int i = 1; i <= m; i++) {
-		sort(v[i].begin(), v[i].end());
-	}
-	dfs(start);
-	bfs(start);
 
-	for (int i = 0; i < result_dfs.size(); i++) {
-		cout << result_dfs[i] << " ";
-	}	
-	cout << endl;
-	for (int i = 0; i < result_bfs.size(); i++) {
-		cout << result_bfs[i] << " ";
-	}
-	
 }
