@@ -16,7 +16,6 @@ int row;
 int col;
 int c;
 
-
 void bfs(int x, int y) {
 	q.push_back({ x,y });
 	visit[x][y] = true;
