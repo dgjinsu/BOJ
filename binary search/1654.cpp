@@ -11,7 +11,6 @@ int main() {
 	cin >> k >> n;
 	int arr[10000];
 
-
 	for (int i = 0; i < k; i++) {
 		cin >> arr[i];
 	}
@@ -23,7 +22,6 @@ int main() {
 	long long result = 0;
 
 	while (left<=right) {
-		//if (left >= right) break;
 		long long value = (left + right) / 2;
 		int answer = 0;
 		int index = 0;
