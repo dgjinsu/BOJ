@@ -14,6 +14,7 @@ ofstream fout;
 
 int arr[102];
 bool visit[102];
+int result[102];
 deque<int> q;
 
 void bfs(int x) {
@@ -26,6 +27,11 @@ void bfs(int x) {
 			int next_a = a + i;
 			if (next_a > 100) continue;
 			next_a = arr[next_a];
+			if (visit[next_a] == false) {
+				q.push_back(next_a);
+				visit[next_a] = true;
+				result[next_a] = result[a] + 1;
+			}
 		}
 	}
 }
@@ -47,5 +53,6 @@ int main() {
 		arr[x] = y;
 	}
 	bfs(1);
+	cout << result[100];
 
 }
